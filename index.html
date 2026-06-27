@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bayt ul Hikma - Boshqaruv Tizimi</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f1c40f;
+            --light: #ecf0f1;
+            --accent: #3498db;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 15px;
+            color: #333;
+        }
+
+        /* Parol oynasi uslubi */
+        .login-box {
+            max-width: 400px;
+            margin: 100px auto 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Asosiy konteyner */
+        .container {
+            display: none;
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary);
+            margin-top: 0;
+            border-bottom: 2px solid var(--light);
+            padding-bottom: 10px;
+        }
+
+        .mode-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .btn-mode {
+            flex: 1;
+            padding: 12px 5px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: #f9f9f9;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            color: var(--primary);
+        }
+
+        .btn-mode.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        select, input[type="date"], input[type="number"], input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .student-row {
+            display: flex;
+            flex-direction: column;
+            padding: 12px;
+            border-bottom: 1px solid var(--light);
+            margin-bottom: 5px;
+        }
+
+        .student-name {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 5px;
+        }
+
+        .btn-status {
+            flex: 1;
+            padding: 8px 5px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+.btn-status.active-keldi { background-color: var(--success); color: white; border-color: var(--success); }
+        .btn-status.active-kelmadi { background-color: var(--danger); color: white; border-color: var(--danger); }
+        .btn-status.active-kechikdi { background-color: var(--warning); color: black; border-color: var(--warning); }
+
+        .input-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-suffix {
+            font-weight: bold;
+            font-size: 16px;
+            color: var(--primary);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 3px 10px rgba(44, 62, 80, 0.2);
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-box" id="loginBox">
+    <h2 style="border:none; padding:0;">Tizimga kirish</h2>
+    <p style="color:#666; font-size:14px;">Davom etish uchun parolni kiriting:</p>
+    <input type="password" id="passwordInput" placeholder="Parol" onkeydown="if(event.key === 'Enter') checkPassword()">
+    <button onclick="checkPassword()">Kirish</button>
+</div>
+
+<div class="container" id="mainContainer">
+    <h2>Bayt ul Hikma</h2>
+    
+    <div class="mode-group">
+        <button class="btn-mode active" id="mode-davomat" onclick="changeMode('davomat')">📝 Davomat</button>
+        <button class="btn-mode" id="mode-vazifa" onclick="changeMode('vazifa')">🏠 Uyga vazifa</button>
+        <button class="btn-mode" id="mode-test" onclick="changeMode('test')">📊 Testlar</button>
+    </div>
+
+    <div class="form-group">
+        <label for="dateInput">Sana:</label>
+        <input type="date" id="dateInput">
+    </div>
+
+    <div class="form-group">
+        <label for="groupSelect">Guruhni tanlang:</label>
+        <select id="groupSelect" onchange="renderStudents()">
+        </select>
+    </div>
+
+    <div id="studentsList">
+    </div>
+
+    <button class="submit-btn" id="submitBtn" onclick="sendData()">📤 Davomatni Jo'natish</button>
+</div>
+
+<script>
+    const SHIFRLANGAN_PAROL = "QeXl/MrJs/ihy.1026";
+    const KALIT = 4;
+
+    function caesarCipher(matn, siljish) {
+        return matn.split('').map(belgi => {
+            let kod = belgi.charCodeAt(0);
+            if (kod >= 65 && kod <= 90) {
+                return String.fromCharCode(((kod - 65 + siljish) % 26) + 65);
+            }
+            if (kod >= 97 && kod <= 122) {
+                return String.fromCharCode(((kod - 97 + siljish) % 26) + 97);
+            }
+            return belgi;
+        }).join('');
+    }
+
+    function checkPassword() {
+        const kiritilganParol = document.getElementById("passwordInput").value;
+        const kiritilganShifr = caesarCipher(kiritilganParol, KALIT);
+
+        if (kiritilganShifr === SHIFRLANGAN_PAROL) {
+            document.getElementById("loginBox").style.display = "none";
+            document.getElementById("mainContainer").style.display = "block";
+            initTizim(); 
+        } else {
+            alert("Xato parol kiritildi! Qaytadan urinib ko'ring.");
+            document.getElementById("passwordInput").value = "";
+            document.getElementById("passwordInput").focus();
+        }
+    }
+
+    const guruhlar = [
+        "10-sinf Matematika",
+        "11-sinf Algebra",
+        "Mental Arifmetika 1-guruh",
+        "Geometriya Intensive"
+    ];
+
+    const oquvchilarBazi = {
+        "10-sinf Matematika": ["Rayev Valadjon", "Falonchiyev Pistonchi", "Aliyev Vali", "Eshmatov Toshmat"],
+        "11-sinf Algebra": ["Karimov Nodir", "Solihoʻjayev Asad", "Usmonova Gulnoza"],
+        "Mental Arifmetika 1-guruh": ["Jalolov Umar", "Hikmatov Davron"],
+        "Geometriya Intensive": ["Sattorov Diyor", "Raimov Barotjon"]
+    };
+
+let currentMode = 'davomat';
+    let davomatData = {};
+    let vazifaData = {};
+    let testData = {};
+
+    function initTizim() {
+        const bugun = new Date();
+        const yil = bugun.getFullYear();
+        const oy = String(bugun.getMonth() + 1).padStart(2, '0');
+        const kun = String(bugun.getDate()).padStart(2, '0');
+        document.getElementById("dateInput").value = ${yil}-${oy}-${kun};
+
+        const select = document.getElementById("groupSelect");
+        select.innerHTML = ""; 
+        guruhlar.forEach(guruh => {
+            let option = document.createElement("option");
+            option.value = guruh;
+            option.innerText = guruh;
+            select.appendChild(option);
+        });
+        renderStudents();
+    }
+
+    function changeMode(mode) {
+        currentMode = mode;
+        
+        document.getElementById('mode-davomat').classList.remove('active');
+        document.getElementById('mode-vazifa').classList.remove('active');
+        document.getElementById('mode-test').classList.remove('active');
+        
+        document.getElementById(mode-${mode}).classList.add('active');
+
+        const submitBtn = document.getElementById('submitBtn');
+        if(mode === 'davomat') submitBtn.innerHTML = "📤 Davomatni Jo'natish";
+        if(mode === 'vazifa') submitBtn.innerHTML = "📤 Vazifalarni Jo'natish";
+        if(mode === 'test') submitBtn.innerHTML = "📤 Test Natijalarini Jo'natish";
+
+        renderStudents();
+    }
+
+    function renderStudents() {
+        const guruh = document.getElementById("groupSelect").value;
+        const listContainer = document.getElementById("studentsList");
+        if(!listContainer) return;
+        listContainer.innerHTML = ""; 
+
+        if (!oquvchilarBazi[guruh]) return;
+
+        davomatData = {};
+        vazifaData = {};
+        testData = {};
+
+        oquvchilarBazi[guruh].forEach((ism, index) => {
+            let row = document.createElement("div");
+            row.className = "student-row";
+
+            let innerHTMLContent = <div class="student-name">${index + 1}. ${ism}</div>;
+
+            if (currentMode === 'davomat') {
+                davomatData[ism] = "🟢 Keldi";
+                innerHTMLContent += 
+                    <div class="btn-group">
+                        <button class="btn-status active-keldi" id="keldi-${index}" onclick="setStatus('${ism}', 'Keldi', ${index})">Keldi</button>
+                        <button class="btn-status" id="kelmadi-${index}" onclick="setStatus('${ism}', 'Kelmadi', ${index})">Kelmadi</button>
+                        <button class="btn-status" id="kechikdi-${index}" onclick="setStatus('${ism}', 'Kechikdi', ${index})">Kech qoldi</button>
+                    </div>
+                ;
+            } 
+            else if (currentMode === 'vazifa') {
+                innerHTMLContent += 
+                    <div class="input-container">
+                        <input type="number" id="vazifa-${index}" min="0" max="100" placeholder="0" oninput="saveVazifa('${ism}', this.value)">
+                        <span class="input-suffix">%</span>
+                    </div>
+                ;
+            } 
+            else if (currentMode === 'test') {
+                innerHTMLContent += 
+                    <div class="input-container">
+                        <input type="text" id="test-${index}" placeholder="Masalan: 25 yoki 30 tadan 22 ta" oninput="saveTest('${ism}', this.value)">
+                    </div>
+                ;
+            }
+
+            row.innerHTML = innerHTMLContent;
+            listContainer.appendChild(row);
+        });
+    }
+
+    function setStatus(ism, status, index) {
+        document.getElementById(keldi-${index}).className = "btn-status";
+        document.getElementById(kelmadi-${index}).className = "btn-status";
+        document.getElementById(kechikdi-${index}).className = "btn-status";
+
+if (status === 'Keldi') {
+            davomatData[ism] = "🟢 Keldi";
+            document.getElementById(keldi-${index}).classList.add("active-keldi");
+        } else if (status === 'Kelmadi') {
+            davomatData[ism] = "🔴 Kelmadi (Sababsiz)";
+            document.getElementById(kelmadi-${index}).classList.add("active-kelmadi");
+        } else if (status === 'Kechikdi') {
+            let minut = prompt(${ism} necha daqiqa kechikdi?, "15");
+            if (minut === null || minut === "") minut = "15";
+            davomatData[ism] = 🟡 Kech qoldi (${minut} daqiqa);
+            document.getElementById(kechikdi-${index}).classList.add("active-kechikdi");
+        }
+    }
+
+    function saveVazifa(ism, value) {
+        let num = parseInt(value);
+        if (isNaN(num) || num < 0) num = 0;
+        if (num > 100) {
+            alert("Vazifa foizi 100 dan oshishi mumkin emas!");
+            num = 100;
+        }
+        vazifaData[ism] = num;
+    }
+
+    function saveTest(ism, value) {
+        testData[ism] = value.trim();
+    }
+
+    function sendData() {
+        const guruh = document.getElementById("groupSelect").value;
+        let sana = document.getElementById("dateInput").value;
+
+        if (!sana) {
+            const bugun = new Date();
+            sana = ${bugun.getFullYear()}-${String(bugun.getMonth() + 1).padStart(2, '0')}-${String(bugun.getDate()).padStart(2, '0')};
+            document.getElementById("dateInput").value = sana;
+        }
+
+        const [y, o, k] = sana.split('-');
+        const chiroyliSana = ${k}.${o}.${y};
+
+        const hozir = new Date();
+        const vaqt = ${String(hozir.getHours()).padStart(2, '0')}:${String(hozir.getMinutes()).padStart(2, '0')};
+
+        let xabar = "";
+
+        if (currentMode === 'davomat') {
+            xabar += 📅 <b>Kunlik Davomat Hisoboti</b>\n;
+            xabar += 📆 <b>Sana:</b> ${chiroyliSana} (${vaqt})\n;
+            xabar += 📘 <b>Guruh:</b> ${guruh}\n\n;
+
+            oquvchilarBazi[guruh].forEach(ism => {
+                xabar += 👤 ${ism} -> ${davomatData[ism] || "🟢 Keldi"}\n;
+            });
+        } 
+        else if (currentMode === 'vazifa') {
+            xabar += 🏠 <b>Uyga Vazifa Hisoboti</b>\n;
+            xabar += 📆 <b>Sana:</b> ${chiroyliSana} (${vaqt})\n;
+            xabar += 📘 <b>Guruh:</b> ${guruh}\n\n;
+
+            oquvchilarBazi[guruh].forEach(ism => {
+                let foiz = (vazifaData[ism] !== undefined && vazifaData[ism] !== "") ? vazifaData[ism] : 0;
+                xabar += 👤 ${ism} -> <b>${foiz}%</b>\n;
+            });
+        } 
+        else if (currentMode === 'test') {
+            xabar += 📊 <b>Test Natijalari Hisoboti</b>\n;
+            xabar += 📆 <b>Sana:</b> ${chiroyliSana} (${vaqt})\n;
+            xabar += 📘 <b>Guruh:</b> ${guruh}\n\n;
+
+            oquvchilarBazi[guruh].forEach(ism => {
+                let natija = (testData[ism] !== undefined && testData[ism] !== "") ? testData[ism] : "Kiritilmadi";
+                xabar += 👤 ${ism} -> <b>${natija}</b>\n;
+            });
+        }
+
+        const BOT_TOKEN = "8877153150:AAGaz7_mLQUOx5ZUvgVsGPkSqj5KT2JZlGs"; 
+        const CHAT_ID = "4386823082";     
+
+        const url = https://api.telegram.org/bot${BOT_TOKEN}/sendMessage;
+
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                chat_id: CHAT_ID,
+                text: xabar,
+                parse_mode: "HTML"
+            })
+        });
+    }
+</script>
+
+</body>
+  </html>
